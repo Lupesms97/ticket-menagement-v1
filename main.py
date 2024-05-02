@@ -1,4 +1,3 @@
-from typing import Union
 from fastapi import FastAPI
 from db.dbInfo import get_tickets
 
@@ -11,7 +10,11 @@ def read_root():
     return tickets
 
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+# , q: Union[str, None] = None
+@app.get("/items/{ticket_id}")
+def read_item(ticket_id: int):
+    tickets = get_tickets()
+    for ticket in tickets:
+        if ticket.id == ticket_id:
+            return ticket
+    return {"message": "Ticket not found"}
